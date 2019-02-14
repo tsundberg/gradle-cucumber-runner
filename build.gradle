@@ -1,0 +1,45 @@
+plugins {
+    id "com.gradle.plugin-publish" version "0.10.1"
+    id "java-gradle-plugin"
+    id 'java'
+    id 'maven-publish'
+}
+
+repositories {
+    jcenter()
+    mavenLocal()
+}
+
+version = "0.0.1"
+group = "se.thinkcode"
+
+dependencies {
+    implementation gradleApi()
+    implementation 'org.zeroturnaround:zt-exec:1.10'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.assertj:assertj-core:3.11.1'
+    testImplementation 'org.mockito:mockito-core:2.24.0'
+}
+
+gradlePlugin {
+    plugins {
+        cucumberRunnerPlugin {
+            id = 'se.thinkcode.cucumber-runner'
+            implementationClass = 'se.thinkcode.CucumberRunner'
+        }
+    }
+}
+
+pluginBundle {
+    website = 'http://www.gradle.org/'
+    vcsUrl = 'https://github.com/gradle/gradle'
+    description = 'A Cucumber-JVM runner'
+    tags = ['cucumber', 'cucumber-jvm']
+
+    plugins {
+        cucumberRunnerPlugin {
+            displayName = 'Cucumber runner plugin'
+        }
+    }
+}
