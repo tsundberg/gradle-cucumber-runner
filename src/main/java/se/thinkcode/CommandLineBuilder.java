@@ -26,7 +26,6 @@ class CommandLineBuilder {
         addMonochrome(command, extension, commandLineOption);
         addStrict(command, extension, commandLineOption);
         addSnippets(command, extension, commandLineOption);
-        addJunit(command, extension, commandLineOption);
         addWip(command, extension, commandLineOption);
 
 
@@ -181,19 +180,6 @@ class CommandLineBuilder {
         if (!extension.snippets.isEmpty()) {
             command.add("--snippets");
             command.add(extension.snippets);
-        }
-    }
-
-    private void addJunit(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
-        if (commandLineOption.junit!= null) {
-            command.add("--junit");
-            command.add(commandLineOption.junit);
-            return;
-        }
-
-        if (!extension.junit.isEmpty()) {
-            command.add("--junit");
-            command.add(extension.junit);
         }
     }
 

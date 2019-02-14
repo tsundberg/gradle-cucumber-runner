@@ -108,14 +108,6 @@ public class CucumberTask extends DefaultTask {
         this.snippets = snippets;
     }
 
-    @Option(option = "junit",
-            description = "Pass the OPTION(s) to the JUnit module. See Cucumber help for more details, --cucumber-help=please")
-    String junit;
-
-    public void setJunit(String junit) {
-        this.junit = junit;
-    }
-
     @Option(option = "wip",
             description = "Fail if there are any passing scenarios.")
     String wip;

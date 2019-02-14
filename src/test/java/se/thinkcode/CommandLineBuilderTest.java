@@ -289,28 +289,6 @@ public class CommandLineBuilderTest {
     }
 
     @Test
-    public void should_build_command_adding_junit() {
-        extension.junit = "junit value";
-
-        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption);
-
-        assertCommandStart(actual);
-        assertThat(actual).containsSequence("--junit", "junit value");
-        assertThat(actual).endsWith("src/test/resources");
-    }
-
-    @Test
-    public void should_build_command_adding_junit_from_commandline_option() {
-        commandlineOption.junit = "junit value";
-
-        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption);
-
-        assertCommandStart(actual);
-        assertThat(actual).containsSequence("--junit", "junit value");
-        assertThat(actual).endsWith("src/test/resources");
-    }
-
-    @Test
     public void should_build_command_adding_wip() {
         extension.wip = "wip";
 
