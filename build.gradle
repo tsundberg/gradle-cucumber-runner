@@ -26,20 +26,15 @@ gradlePlugin {
     plugins {
         cucumberRunnerPlugin {
             id = 'se.thinkcode.cucumber-runner'
+            displayName = 'cucumber'
+            description = 'A Cucumber-JVM runner'
             implementationClass = 'se.thinkcode.CucumberRunner'
         }
     }
 }
 
 pluginBundle {
-    website = 'http://www.gradle.org/'
-    vcsUrl = 'https://github.com/gradle/gradle'
-    description = 'A Cucumber-JVM runner'
+    website = 'http://www.thinkcode.se/'
+    vcsUrl = 'https://github.com/tsundberg/gradle-cucumber-runner'
     tags = ['cucumber', 'cucumber-jvm']
-
-    plugins {
-        cucumberRunnerPlugin {
-            displayName = 'Cucumber runner plugin'
-        }
-    }
 }
