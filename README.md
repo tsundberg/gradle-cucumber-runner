@@ -10,6 +10,54 @@ Run Cucumber with the default settings
 
     ./gradlew cucumber
 
+### Configuration
+
+Cucumber must know where your steps are implemented. Add an extension to your gradle build script.
+
+```
+cucumber {
+    glue = 'classpath:se.thinkcode'
+}
+```
+
+This will search for steps in the package `se.thinkcode` and any subpackages below it.
+
+The complete list of options that can be set are these:
+
+```
+cucumber {
+    threads = '4';
+    glue = 'classpath:se.thinkcode'
+    plugin = 'pretty';
+    tags = '';
+    name = '';
+    dryRun = 'true';
+    monochrome = 'please';
+    strict = 'please';
+    snippets = '';
+    version = '';
+    help = '';
+    i18n = '';
+    wip = '';
+
+    featurePath = "src/test/resources";
+    main = "cucumber.api.cli.Main";
+}
+```
+
+The only setting with default values are
+
+```
+    featurePath = 'src/test/resources'
+    main = 'cucumber.api.cli.Main'
+```
+
+### --junit
+
+Cucumber support setting properties for `junit` from the command line. The option `--junit` is not supported. 
+
+If you have an example where you think you need it, please share the example nd the desired outcome. 
+Maybe there should be support for `--junit`. If that is the case, it is possible that it will be implemented.
 
 ### Getting help
 
@@ -45,4 +93,8 @@ Local build:
 
 To publish the plugin to Gradle
 
+* Update the version number
 
+* Execute the command `./gradlew publishPlugins`
+    
+Ref: https://guides.gradle.org/publishing-plugins-to-gradle-plugin-portal/         
