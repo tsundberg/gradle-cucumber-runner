@@ -331,7 +331,12 @@ public class CommandLineBuilderTest {
     }
 
     private void assertCommandStart(String[] actual) {
-        assertThat(actual).startsWith("java", "-cp", "faked classpath", "cucumber.api.cli.Main");
-    }
+        assertThat(actual).startsWith("java");
 
+        String actualSystemProperty = actual[1];
+        assertThat(actualSystemProperty).startsWith("-D");
+        assertThat(actualSystemProperty).containsOnlyOnce("=");
+
+        assertThat(actual).containsSequence("-cp", "faked classpath", "cucumber.api.cli.Main");
+    }
 }

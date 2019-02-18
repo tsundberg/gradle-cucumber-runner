@@ -10,7 +10,7 @@ repositories {
     mavenLocal()
 }
 
-version = "0.0.1"
+version = "0.0.2"
 group = "se.thinkcode"
 
 dependencies {
@@ -34,7 +34,7 @@ gradlePlugin {
 }
 
 pluginBundle {
-    website = 'http://www.thinkcode.se/'
+    website = 'https://github.com/tsundberg/gradle-cucumber-runner/blob/' + version + '/README.md'
     vcsUrl = 'https://github.com/tsundberg/gradle-cucumber-runner'
     tags = ['cucumber', 'cucumber-jvm']
 }

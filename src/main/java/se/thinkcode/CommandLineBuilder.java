@@ -2,6 +2,7 @@ package se.thinkcode;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 
 class CommandLineBuilder {
 
@@ -10,6 +11,7 @@ class CommandLineBuilder {
 
         List<String> command = new ArrayList<>();
         command.add("java");
+        addSystemProperties(command);
         command.add("-cp");
         command.add(classpath);
         command.add(main);
@@ -33,6 +35,18 @@ class CommandLineBuilder {
         addFeaturePath(command, extension, commandLineOption);
 
         return command.toArray(new String[0]);
+    }
+
+    private void addSystemProperties(List<String> command) {
+        Properties props = System.getProperties();
+
+        for (Object key : props.keySet()) {
+            String keyValue = (String) key;
+            String value = props.getProperty(keyValue);
+
+            String systemProperty = "-D" + keyValue + "=" + value;
+            command.add(systemProperty);
+        }
     }
 
     private void addHelp(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
@@ -147,7 +161,7 @@ class CommandLineBuilder {
     }
 
     private void addMonochrome(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
-        if (commandLineOption.monochrome!= null) {
+        if (commandLineOption.monochrome != null) {
             command.add("--monochrome");
             command.add(commandLineOption.monochrome);
             return;
@@ -171,7 +185,7 @@ class CommandLineBuilder {
     }
 
     private void addSnippets(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
-        if (commandLineOption.snippets!= null) {
+        if (commandLineOption.snippets != null) {
             command.add("--snippets");
             command.add(commandLineOption.snippets);
             return;
@@ -184,7 +198,7 @@ class CommandLineBuilder {
     }
 
     private void addWip(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
-        if (commandLineOption.wip!= null) {
+        if (commandLineOption.wip != null) {
             command.add("--wip");
             return;
         }
