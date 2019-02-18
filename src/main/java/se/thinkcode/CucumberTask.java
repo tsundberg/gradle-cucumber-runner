@@ -7,8 +7,12 @@ import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.SourceSetContainer;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
-import org.zeroturnaround.exec.ProcessExecutor;
-import org.zeroturnaround.exec.stream.LogOutputStream;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 public class CucumberTask extends DefaultTask {
 
@@ -167,21 +171,17 @@ public class CucumberTask extends DefaultTask {
         int exitValue;
 
         try {
-            exitValue = new ProcessExecutor().command(command)
-                    .redirectOutput(new LogOutputStream() {
-                        @Override
-                        protected void processLine(String line) {
-                            System.out.println(line);
-                        }
-                    })
-                    .redirectError(new LogOutputStream() {
-                        @Override
-                        protected void processLine(String line) {
-                            System.err.println(line);
-                        }
-                    })
-                    .execute()
-                    .getExitValue();
+            Process process = new ProcessBuilder()
+                    .command(command)
+                    .start();
+
+            StreamConsumer stdOut = new StreamConsumer(process.getInputStream(), System.out::println);
+            Executors.newSingleThreadExecutor().submit(stdOut);
+
+            StreamConsumer stdErr = new StreamConsumer(process.getInputStream(), System.err::println);
+            Executors.newSingleThreadExecutor().submit(stdErr);
+
+            exitValue = process.waitFor();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -203,5 +203,21 @@ public class CucumberTask extends DefaultTask {
         throw new RuntimeException("The test classpath was not found");
     }
 
+    private static class StreamConsumer implements Runnable {
+        private InputStream inputStream;
+        private Consumer<String> consumer;
 
+        private StreamConsumer(InputStream inputStream, Consumer<String> consumer) {
+            this.inputStream = inputStream;
+            this.consumer = consumer;
+        }
+
+        @Override
+        public void run() {
+            InputStreamReader in = new InputStreamReader(inputStream);
+            new BufferedReader(in)
+                    .lines()
+                    .forEach(consumer);
+        }
+    }
 }

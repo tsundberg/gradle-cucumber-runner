@@ -10,12 +10,11 @@ repositories {
     mavenLocal()
 }
 
-version = "0.0.2"
+version = "0.0.3"
 group = "se.thinkcode"
 
 dependencies {
     implementation gradleApi()
-    implementation 'org.zeroturnaround:zt-exec:1.10'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.assertj:assertj-core:3.11.1'
