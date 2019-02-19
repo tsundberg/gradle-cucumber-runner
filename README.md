@@ -133,6 +133,13 @@ Execute Gradle with `debug` to see the command that will be executed.
 
 The printout is verbose, search for `Cucumber command` to find the actual command executed.
 
+## Caveat
+
+In order for Cucumber to have all test resources available, the cucumber task depends on the java plugin task `check`.
+This means that your unit tests will be executed before Cucumber is executed.
+
+The Java plugin lifecycle is described in 
+the [Java plugin](https://docs.gradle.org/current/userguide/java_plugin.html) documentation.
 
 ## Development
 
