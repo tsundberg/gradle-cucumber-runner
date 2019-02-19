@@ -2,7 +2,7 @@
 
 A gradle plugin for running Cucumber-JVM.
 
-It utilises the Cucumber-JVM command line implementation and forwards every call to `Main`
+It utilises the Cucumber-JVM command line implementation and forwards every call to `cucumber.api.cli.Main`
 
 ## Usage
 
