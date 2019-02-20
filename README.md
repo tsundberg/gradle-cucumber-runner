@@ -122,10 +122,11 @@ Maybe there should be support for `--junit`. If that is the case, it is possible
 This will call Cucumber with the argument `--help`. Unfortunately, Gradle requires that each 
 command line option is followed by a value. It is `please` above. However, it could be anything.
 
-
-    
-
 ### Trouble shooting
+
+#### Java 8 is required
+
+The plugin is build using Java 8 and gradle must be executed with Java 8 or newer.
 
 #### The cucumber command executed
 
