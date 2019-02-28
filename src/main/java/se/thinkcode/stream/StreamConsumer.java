@@ -1,6 +1,5 @@
 package se.thinkcode.stream;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -33,21 +32,13 @@ public class StreamConsumer implements Runnable {
             while (!stop) {
                 while (inputStream.available() > 0 && !stop) {
                     int read = inputStream.read();
-                    flushIfDot((char) read);
                     outputStream.write(read);
                 }
                 outputStream.flush();
                 Thread.sleep(SLEEPING_TIME);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void flushIfDot(char read) throws IOException {
-        String dot = Character.toString(read);
-        if (".".equals(dot)) {
-            outputStream.flush();
+            throw new RuntimeException(e);
         }
     }
 
