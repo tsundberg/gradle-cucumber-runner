@@ -5,7 +5,7 @@ public class CucumberExtension {
 
     public String threads = "";
     public String glue = "";
-    public String plugin = "";
+    public String[] plugin = new String[0];
     public String tags = "";
     public String name = "";
     public String dryRun = "";

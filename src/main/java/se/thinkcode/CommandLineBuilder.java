@@ -112,14 +112,20 @@ class CommandLineBuilder {
 
     private void addPlugin(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
         if (commandLineOption.plugin != null) {
-            command.add("--plugin");
-            command.add(commandLineOption.plugin);
+            String[] plugins = PluginParser.parse(commandLineOption.plugin);
+            for (String plugin : plugins) {
+                command.add("--plugin");
+                command.add(plugin);
+            }
+
             return;
         }
 
-        if (!extension.plugin.isEmpty()) {
-            command.add("--plugin");
-            command.add(extension.plugin);
+        if (extension.plugin.length > 0) {
+            for (String plugin : extension.plugin) {
+                command.add("--plugin");
+                command.add(plugin);
+            }
         }
     }
 

@@ -54,11 +54,11 @@ public class CucumberTask extends DefaultTask {
     }
 
     @Option(option = "plugin",
-            description = "Register a plugin. See Cucumber help for more details, --cucumber-help=please")
+            description = "Register one or many plugins. --plugin=\"pretty, progress\" specifies two plugins See Cucumber help for more details, --cucumber-help=please")
     String plugin;
 
-    public void setPlugin(String plugin) {
-        this.plugin = plugin;
+    public void setPlugin(String plugins) {
+        this.plugin = plugins;
     }
 
     @Option(option = "tags",
@@ -175,7 +175,7 @@ public class CucumberTask extends DefaultTask {
             StreamConsumer stdOut = new StreamConsumer(process.getInputStream(), System.out);
             new Thread(stdOut).start();
 
-            StreamConsumer stdErr = new StreamConsumer(process.getInputStream(), System.err);
+            StreamConsumer stdErr = new StreamConsumer(process.getErrorStream(), System.err);
             new Thread(stdErr).start();
 
             exitValue = process.waitFor();

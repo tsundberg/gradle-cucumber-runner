@@ -4,7 +4,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class StreamConsumer implements Runnable {
-    private static final int SLEEPING_TIME = 20;
+    private static final int SLEEPING_TIME = 1;
 
     private final InputStream inputStream;
     private final OutputStream outputStream;

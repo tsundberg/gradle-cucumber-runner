@@ -136,12 +136,24 @@ public class CommandLineBuilderTest {
 
     @Test
     public void should_build_command_adding_plugin() {
-        extension.plugin = "plugin name";
+        extension.plugin = new String[]{"plugin name"};
 
         String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption);
 
         assertCommandStart(actual);
         assertThat(actual).containsSequence("--plugin", "plugin name");
+        assertThat(actual).endsWith("src/test/resources");
+    }
+
+    @Test
+    public void should_build_command_adding_multiple_plugins() {
+        extension.plugin = new String[]{"plugin name", "another plugin"};
+
+        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption);
+
+        assertCommandStart(actual);
+        assertThat(actual).containsSequence("--plugin", "plugin name");
+        assertThat(actual).containsSequence("--plugin", "another plugin");
         assertThat(actual).endsWith("src/test/resources");
     }
 
@@ -153,6 +165,18 @@ public class CommandLineBuilderTest {
 
         assertCommandStart(actual);
         assertThat(actual).containsSequence("--plugin", "plugin name");
+        assertThat(actual).endsWith("src/test/resources");
+    }
+
+    @Test
+    public void should_build_command_adding_multiple_plugins_from_commandline_option() {
+        commandlineOption.plugin = "plugin name, another plugin";
+
+        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption);
+
+        assertCommandStart(actual);
+        assertThat(actual).containsSequence("--plugin", "plugin name");
+        assertThat(actual).containsSequence("--plugin", "another plugin");
         assertThat(actual).endsWith("src/test/resources");
     }
 

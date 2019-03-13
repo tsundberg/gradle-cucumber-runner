@@ -28,7 +28,7 @@ The complete list of options that can be set are these:
 cucumber {
     threads = '4'
     glue = 'classpath:se.thinkcode'
-    plugin = 'pretty'
+    plugin = ['pretty']
     tags = ''
     name = ''
     dryRun = 'true'
@@ -85,6 +85,27 @@ you can't stack tags. The solution is to put them into quotes like this:
 
 Doing so will forward the expression `not @wip` to the option `-tags` 
 and finally to Cucumber.
+
+#### Plugins
+
+Cucumber supports usage of multiple plugins at the same time.
+
+Specify them as an array of strings in the build file
+
+    plugin = ['se.thinkcode.progress.ProgressPrinter', 'se.thinkcode.report.MultiSeamHtmlReport:./build/reports']
+
+Or specify them as a command line option:
+
+    --plugin "se.thinkcode.progress.ProgressPrinter, se.thinkcode.report.MultiSeamHtmlReport:./build/reports"
+
+The string will be divided into an array with `,` as delimiter. Any whitespace around `,` will be removed. 
+
+This will specify that two plugins will be used and there names are
+
+* `se.thinkcode.progress.ProgressPrinter`
+* `se.thinkcode.report.MultiSeamHtmlReport:./build/reports`
+
+The `se.thinkcode.report.MultiSeamHtmlReport:./build/reports` plugin will be configured to use the directory `./build/reports`.
 
 ### Running features in parallel
 
