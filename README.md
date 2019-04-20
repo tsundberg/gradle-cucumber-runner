@@ -6,7 +6,17 @@ It utilises the Cucumber-JVM command line implementation and forwards every call
 
 ## Usage
 
-Run Cucumber with the default settings
+Add the plugin to your project 
+
+```
+plugins {
+  id "se.thinkcode.cucumber-runner" version "0.0.7"
+}
+```
+
+The complete, and updated, instructions are availabe at the [plugin portal](https://plugins.gradle.org/plugin/se.thinkcode.cucumber-runner)
+
+Then run Cucumber with the default settings
 
     ./gradlew cucumber
 
