@@ -14,7 +14,8 @@ plugins {
 }
 ```
 
-The complete, and updated, instructions are availabe at the [plugin portal](https://plugins.gradle.org/plugin/se.thinkcode.cucumber-runner)
+The complete, and updated, instructions are availabe at the 
+[plugin portal](https://plugins.gradle.org/plugin/se.thinkcode.cucumber-runner).
 
 Then run Cucumber with the default settings
 
