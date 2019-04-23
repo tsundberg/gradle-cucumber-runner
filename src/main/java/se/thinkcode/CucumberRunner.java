@@ -9,6 +9,6 @@ public class CucumberRunner implements Plugin<Project> {
         project.getExtensions().create("cucumber", CucumberExtension.class);
         CucumberTask cucumber = project.getTasks().create("cucumber", CucumberTask.class);
 
-        project.afterEvaluate((p) -> cucumber.dependsOn(p.getTasks().getByName("check")));
+        project.afterEvaluate((p) -> cucumber.dependsOn(p.getTasks().getByName("testClasses")));
     }
 }
