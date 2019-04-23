@@ -10,7 +10,7 @@ Add the plugin to your project
 
 ```
 plugins {
-  id "se.thinkcode.cucumber-runner" version "0.0.7"
+  id "se.thinkcode.cucumber-runner" version "0.0.8"
 }
 ```
 
