@@ -134,7 +134,7 @@ One way of specifying the number of threads to use is:
 
 ```
 cucumber {
-    threads = = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
+    threads = Runtime.runtime.availableProcessors().intdiv(2) ?: 1
 }
 ```
 
