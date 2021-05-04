@@ -335,13 +335,11 @@ public class CommandLineBuilderTest {
     }
 
     @Test
-    public void should_build_command_adding_feature_path() {
-        commandlineOption.featurePath = "a custom feature path";
-
+    public void should_build_command_adding_deault_feature_path() {
         String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption);
 
         assertCommandStart(actual);
-        assertThat(actual).endsWith("a custom feature path");
+        assertThat(actual).endsWith("src/test/resources");
     }
 
     @Test
