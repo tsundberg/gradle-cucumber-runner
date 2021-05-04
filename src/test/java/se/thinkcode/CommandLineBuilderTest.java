@@ -6,9 +6,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 public class CommandLineBuilderTest {
-    private CucumberTask commandlineOption = mock(CucumberTask.class);
-    private CommandLineBuilder builder = new CommandLineBuilder();
-    private CucumberExtension extension = new CucumberExtension();
+    private final CucumberTask commandlineOption = mock(CucumberTask.class);
+    private final CommandLineBuilder builder = new CommandLineBuilder();
+    private final CucumberExtension extension = new CucumberExtension();
 
     @Test
     public void should_build_help_command() {
