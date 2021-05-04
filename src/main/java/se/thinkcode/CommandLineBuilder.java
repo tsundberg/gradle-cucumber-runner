@@ -6,7 +6,7 @@ import java.util.Properties;
 
 class CommandLineBuilder {
 
-    String[] buildCommand(CucumberExtension extension, String classpath, CucumberTask commandLineOption) {
+    String[] buildCommand(CucumberExtension extension, String classpath, CucumberTask commandLineOptions) {
         String main = extension.main;
 
         List<String> command = new ArrayList<>();
@@ -16,23 +16,23 @@ class CommandLineBuilder {
         command.add(classpath);
         command.add(main);
 
-        addHelp(command, extension, commandLineOption);
-        addVersion(command, extension, commandLineOption);
-        addI18N(command, extension, commandLineOption);
-        addThreads(command, extension, commandLineOption);
-        addGlue(command, extension, commandLineOption);
-        addPlugin(command, extension, commandLineOption);
-        addTags(command, extension, commandLineOption);
-        addName(command, extension, commandLineOption);
-        addDryRun(command, extension, commandLineOption);
-        addMonochrome(command, extension, commandLineOption);
-        addStrict(command, extension, commandLineOption);
-        addSnippets(command, extension, commandLineOption);
-        addWip(command, extension, commandLineOption);
+        addHelp(command, extension, commandLineOptions);
+        addVersion(command, extension, commandLineOptions);
+        addI18N(command, extension, commandLineOptions);
+        addThreads(command, extension, commandLineOptions);
+        addGlue(command, extension, commandLineOptions);
+        addPlugin(command, extension, commandLineOptions);
+        addTags(command, extension, commandLineOptions);
+        addName(command, extension, commandLineOptions);
+        addDryRun(command, extension, commandLineOptions);
+        addMonochrome(command, extension, commandLineOptions);
+        addStrict(command, extension, commandLineOptions);
+        addSnippets(command, extension, commandLineOptions);
+        addWip(command, extension, commandLineOptions);
 
 
         // must be last
-        addFeaturePath(command, extension, commandLineOption);
+        addFeaturePath(command, extension, commandLineOptions);
 
         return command.toArray(new String[0]);
     }
