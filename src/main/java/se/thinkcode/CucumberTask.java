@@ -9,7 +9,7 @@ import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
 import se.thinkcode.stream.StreamConsumer;
 
-import java.util.concurrent.Executors;
+import java.io.File;
 
 public class CucumberTask extends DefaultTask {
 
@@ -139,7 +139,8 @@ public class CucumberTask extends DefaultTask {
 
         try {
             CommandLineBuilder cliBuilder = new CommandLineBuilder();
-            String[] command = cliBuilder.buildCommand(extension, getClasspath(), this);
+            File projectDir = getProject().getProjectDir();
+            String[] command = cliBuilder.buildCommand(extension, getClasspath(), this, projectDir);
             debugCommand(command);
             execute(command);
         } catch (Exception e) {

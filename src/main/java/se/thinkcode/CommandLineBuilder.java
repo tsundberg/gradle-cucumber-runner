@@ -1,12 +1,13 @@
 package se.thinkcode;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
 class CommandLineBuilder {
 
-    String[] buildCommand(CucumberExtension extension, String classpath, CucumberTask commandLineOptions) {
+    String[] buildCommand(CucumberExtension extension, String classpath, CucumberTask commandLineOptions, File projectDir) {
         String main = extension.main;
 
         List<String> command = new ArrayList<>();
@@ -30,9 +31,8 @@ class CommandLineBuilder {
         addSnippets(command, extension, commandLineOptions);
         addWip(command, extension, commandLineOptions);
 
-
         // must be last
-        addFeaturePath(command, extension, commandLineOptions);
+        addFeaturePath(command, extension, commandLineOptions, projectDir);
 
         return command.toArray(new String[0]);
     }
@@ -214,14 +214,25 @@ class CommandLineBuilder {
         }
     }
 
-    private void addFeaturePath(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
-        if (commandLineOption.featurePath != null) {
-            command.add(commandLineOption.featurePath);
+    private void addFeaturePath(List<String> command, CucumberExtension extension, CucumberTask commandLineOption, File projectDir) {
+        String featurePath = commandLineOption.featurePath;
+        if (featurePath != null) {
+            boolean absolutePath = new File(featurePath).isAbsolute();
+            if (!absolutePath) {
+                String root = getAbsoluteRoot(projectDir);
+                featurePath = root + featurePath;
+            }
+
+            command.add(featurePath);
             return;
         }
 
-        if (!extension.featurePath.isEmpty()) {
-            command.add(extension.featurePath);
-        }
+        String root = getAbsoluteRoot(projectDir);
+        featurePath = root + extension.featurePath;
+        command.add(featurePath);
+    }
+
+    private String getAbsoluteRoot(File projectDir) {
+        return projectDir.getAbsolutePath() + File.separator;
     }
 }
