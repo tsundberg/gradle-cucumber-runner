@@ -10,6 +10,10 @@ import org.gradle.api.tasks.options.Option;
 import se.thinkcode.stream.StreamConsumer;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
+import java.nio.file.Paths;
 
 public class CucumberTask extends DefaultTask {
 
@@ -115,6 +119,14 @@ public class CucumberTask extends DefaultTask {
 
     public void setWip(String wip) {
         this.wip = wip;
+    }
+
+    @Option(option = "shorten",
+            description = "Shorten the command line using @argFile (Java 9+)")
+    boolean shorten;
+
+    public void setShorten(boolean shorten) {
+        this.shorten = shorten;
     }
 
     @Option(option = "featurePath",

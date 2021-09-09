@@ -1,6 +1,8 @@
 package se.thinkcode;
 
-import java.io.File;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -13,8 +15,7 @@ class CommandLineBuilder {
         List<String> command = new ArrayList<>();
         command.add("java");
         addSystemProperties(command);
-        command.add("-cp");
-        command.add(classpath);
+        addClasspath(command, classpath, extension, commandLineOptions);
         command.add(main);
 
         addHelp(command, extension, commandLineOptions);
@@ -46,6 +47,30 @@ class CommandLineBuilder {
 
             String systemProperty = "-D" + keyValue + "=" + value;
             command.add(systemProperty);
+        }
+    }
+
+    private void addClasspath(List<String> command, String classpath, CucumberExtension extension, CucumberTask commandLineOption) {
+        boolean doShorten;
+        if (commandLineOption.shorten) {
+            doShorten = true;
+        } else {
+            doShorten = !extension.shorten.isEmpty();
+        }
+        if (doShorten) {
+            String argFile = Paths.get(commandLineOption.getTemporaryDir().getAbsolutePath(),"cucumber_runner_argFile").toString();
+            try {
+                PrintWriter writer = new PrintWriter(argFile, StandardCharsets.UTF_8);
+                writer.println("-classpath\n" + classpath);
+                writer.close();
+                command.add("@" + argFile);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException(String.format("Cannot write temporary file on %s,\nexception message:\n %s", argFile, e.getMessage()));
+            }
+        } else {
+            command.add("-cp");
+            command.add(classpath);
         }
     }
 
@@ -214,7 +239,9 @@ class CommandLineBuilder {
         }
     }
 
-    private void addFeaturePath(List<String> command, CucumberExtension extension, CucumberTask commandLineOption, File projectDir) {
+    private void addFeaturePath(
+            List<String> command, CucumberExtension extension, CucumberTask commandLineOption, File projectDir
+    ) {
         String featurePath = commandLineOption.featurePath;
         if (featurePath != null) {
             boolean absolutePath = new File(featurePath).isAbsolute();
