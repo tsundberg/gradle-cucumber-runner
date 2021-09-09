@@ -16,6 +16,7 @@ public class CucumberExtension {
     public String help = "";
     public String i18n = "";
     public String wip = "";
+    public String shorten = "";
 
     public String featurePath = "src/test/resources";
 
