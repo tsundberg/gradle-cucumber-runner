@@ -24,4 +24,14 @@ public class ClasspathShortenerTest {
         assertThat(argFile).exists().canRead();
         assertThat(contentOf(argFile)).startsWith("-classpath").contains(expectedClasspath);
     }
+
+    @Test
+    public void create_manifest_jar() throws IOException {
+        String tempDir = temporaryFolder.newFolder().getAbsolutePath();
+        String expectedClasspath = "faked classpath";
+
+        String manifestJarFilePath = ClasspathShortener.createManifestJarFile(expectedClasspath, tempDir);
+        File manifestJarFile = new File(manifestJarFilePath);
+        assertThat(manifestJarFile).exists().canRead();
+    }
 }

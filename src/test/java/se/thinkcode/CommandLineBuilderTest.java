@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.contentOf;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -325,27 +324,51 @@ public class CommandLineBuilderTest {
     }
 
     @Test
-    public void should_build_command_adding_shorten() throws IOException {
-        extension.shorten = "true";
+    public void should_build_command_adding_shorten_manifest() throws IOException {
+        extension.shorten = "manifest";
         File expectedFolder = temporaryFolder.newFolder("testShorten");
-        Path expectedFilePath = Paths.get(expectedFolder.getAbsolutePath(),"cucumber_runner_argFile");
+        Path expectedFilePath = Paths.get(expectedFolder.getAbsolutePath(), "cucumber_runner_manifest.jar");
         when(commandlineOption.getTemporaryDir()).thenReturn(expectedFolder);
 
         String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption, projectDir);
 
-        assertShortenedCommand(actual, expectedFilePath, "faked classpath");
+        assertShortenedCommandStart(actual, expectedFilePath, extension.shorten);
     }
 
     @Test
-    public void should_build_command_adding_shorten_from_commandline_option() throws IOException {
-        commandlineOption.shorten = true;
+    public void should_build_command_adding_shorten_manifest_from_commandline_option() throws IOException {
+        commandlineOption.shorten = "manifest";
         File expectedFolder = temporaryFolder.newFolder("testShorten");
-        Path expectedFilePath = Paths.get(expectedFolder.getAbsolutePath(),"cucumber_runner_argFile");
+        Path expectedFilePath = Paths.get(expectedFolder.getAbsolutePath(), "cucumber_runner_manifest.jar");
         when(commandlineOption.getTemporaryDir()).thenReturn(expectedFolder);
 
         String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption, projectDir);
 
-        assertShortenedCommand(actual, expectedFilePath, "faked classpath");
+        assertShortenedCommandStart(actual, expectedFilePath, commandlineOption.shorten);
+    }
+
+    @Test
+    public void should_build_command_adding_shorten_argfile() throws IOException {
+        extension.shorten = "argfile";
+        File expectedFolder = temporaryFolder.newFolder("testShorten");
+        Path expectedFilePath = Paths.get(expectedFolder.getAbsolutePath(), "cucumber_runner_argFile");
+        when(commandlineOption.getTemporaryDir()).thenReturn(expectedFolder);
+
+        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption, projectDir);
+
+        assertShortenedCommandStart(actual, expectedFilePath, extension.shorten);
+    }
+
+    @Test
+    public void should_build_command_adding_shorten_argfile_from_commandline_option() throws IOException {
+        commandlineOption.shorten = "argfile";
+        File expectedFolder = temporaryFolder.newFolder("testShorten");
+        Path expectedFilePath = Paths.get(expectedFolder.getAbsolutePath(), "cucumber_runner_argFile");
+        when(commandlineOption.getTemporaryDir()).thenReturn(expectedFolder);
+
+        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption, projectDir);
+
+        assertShortenedCommandStart(actual, expectedFilePath, commandlineOption.shorten);
     }
 
     @Test
@@ -398,16 +421,22 @@ public class CommandLineBuilderTest {
         assertThat(actual).containsSequence("-cp", "faked classpath", "cucumber.api.cli.Main");
     }
 
-    private void assertShortenedCommand(String[] actual, Path expectedFilePath, String expectedClasspath) {
+    private void assertShortenedCommandStart(String[] actual, Path expectedFilePath, String shortenMethod) {
         assertThat(actual).startsWith("java");
 
         String actualSystemProperty = actual[1];
         assertThat(actualSystemProperty).startsWith("-D");
         assertThat(actualSystemProperty).containsOnlyOnce("=");
 
-        assertThat(actual).containsSequence("@" + expectedFilePath.toString(), "cucumber.api.cli.Main");
+        switch (shortenMethod) {
+            case "manifest":
+                assertThat(actual).containsSequence("-cp", expectedFilePath.toString(), "cucumber.api.cli.Main");
+                break;
+            case "argfile":
+                assertThat(actual).containsSequence("@" + expectedFilePath.toString(), "cucumber.api.cli.Main");
+                break;
+        }
         File expectedFile = expectedFilePath.toFile();
         assertThat(expectedFile).exists().canRead();
-        assertThat(contentOf(expectedFile)).startsWith("-classpath").contains(expectedClasspath);
     }
 }

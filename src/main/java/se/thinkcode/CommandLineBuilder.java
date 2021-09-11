@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Properties;
 
 import static se.thinkcode.ClasspathShortener.createJava9argFile;
+import static se.thinkcode.ClasspathShortener.createManifestJarFile;
 
 class CommandLineBuilder {
 
@@ -51,19 +52,27 @@ class CommandLineBuilder {
     }
 
     private void addClasspath(List<String> command, String classpath, CucumberExtension extension, CucumberTask commandLineOption) {
-        boolean doShorten;
-        if (commandLineOption.shorten) {
-            doShorten = true;
-        } else {
-            doShorten = !extension.shorten.isEmpty();
+        String shorten = "none";
+        if (commandLineOption.shorten != null) {
+            shorten = commandLineOption.shorten;
+        } else if (!extension.shorten.isEmpty()) {
+            shorten = extension.shorten;
         }
-        if (doShorten) {
-            String tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
-            String argFile = createJava9argFile(classpath, tempDir);
-            command.add("@" + argFile);
-        } else {
-            command.add("-cp");
-            command.add(classpath);
+        String tempDir;
+        switch (shorten) {
+            case "manifest":
+                tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
+                command.add("-cp");
+                command.add(createManifestJarFile(classpath, tempDir));
+                break;
+            case "argfile":
+                tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
+                command.add("@" + createJava9argFile(classpath, tempDir));
+                break;
+            default:
+                command.add("-cp");
+                command.add(classpath);
+                break;
         }
     }
 
