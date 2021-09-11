@@ -141,6 +141,28 @@ cucumber {
 
 This will use as many threads as possible while leaving resources for Gradle to execute.
 
+### Shortening the command line
+
+To solve the issue on Windows where there is a command line's length limit, use the option `--shorten`. The plugin will shorten the command line by making a temporary file for the classpath
+
+you can specify them in the build file like this:
+
+```groovy
+cucumber {
+    shorten = manifest
+}
+```
+
+or via the command line:
+
+```shell
+--shorten manifest
+```
+
+there are two possible values:
+- `manifest`, using a temporary manifest jar file to supply the classpath
+- `argfile`, using @argFile to supply the classpath (Java 9+) 
+
 ### --junit
 
 Cucumber support setting properties for `junit` from the command line. The option `--junit` is not supported. 
