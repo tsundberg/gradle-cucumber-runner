@@ -241,9 +241,7 @@ class CommandLineBuilder {
         }
     }
 
-    private void addFeaturePath(
-            List<String> command, CucumberExtension extension, CucumberTask commandLineOption, File projectDir
-    ) {
+    private void addFeaturePath(List<String> command, CucumberExtension extension, CucumberTask commandLineOption, File projectDir) {
         String featurePath = commandLineOption.featurePath;
         if (featurePath != null) {
             boolean absolutePath = new File(featurePath).isAbsolute();
