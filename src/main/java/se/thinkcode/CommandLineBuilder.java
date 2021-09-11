@@ -1,11 +1,11 @@
 package se.thinkcode;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+
+import static se.thinkcode.ClasspathShortener.createJava9argFile;
 
 class CommandLineBuilder {
 
@@ -58,16 +58,9 @@ class CommandLineBuilder {
             doShorten = !extension.shorten.isEmpty();
         }
         if (doShorten) {
-            String argFile = Paths.get(commandLineOption.getTemporaryDir().getAbsolutePath(),"cucumber_runner_argFile").toString();
-            try {
-                PrintWriter writer = new PrintWriter(argFile, StandardCharsets.UTF_8);
-                writer.println("-classpath\n" + classpath);
-                writer.close();
-                command.add("@" + argFile);
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException(String.format("Cannot write temporary file on %s,\nexception message:\n %s", argFile, e.getMessage()));
-            }
+            String tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
+            String argFile = createJava9argFile(classpath, tempDir);
+            command.add("@" + argFile);
         } else {
             command.add("-cp");
             command.add(classpath);
