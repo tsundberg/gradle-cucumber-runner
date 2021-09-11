@@ -10,10 +10,6 @@ import org.gradle.api.tasks.options.Option;
 import se.thinkcode.stream.StreamConsumer;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
-import java.nio.file.Paths;
 
 public class CucumberTask extends DefaultTask {
 
@@ -122,10 +118,10 @@ public class CucumberTask extends DefaultTask {
     }
 
     @Option(option = "shorten",
-            description = "Shorten the command line using @argFile (Java 9+)")
-    boolean shorten;
+            description = "Shorten the command line by shortening the classpath. Defaults to none. Possible values are [manifest, argfile]")
+    String shorten;
 
-    public void setShorten(boolean shorten) {
+    public void setShorten(String shorten) {
         this.shorten = shorten;
     }
 
