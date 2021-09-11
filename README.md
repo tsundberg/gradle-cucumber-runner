@@ -50,6 +50,7 @@ cucumber {
     help = ''
     i18n = ''
     wip = ''
+    shorten = ''
 
     featurePath = 'src/test/resources'
     main = 'cucumber.api.cli.Main'
