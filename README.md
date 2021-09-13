@@ -70,7 +70,7 @@ The options available can be listed with the command
 
     ./gradlew help --task cucumber
 
-Singe word options can be given to Cucumber with the syntax
+Single word options can be given to Cucumber with the syntax
 
     ./gradlew cucumber --i18n help
     
