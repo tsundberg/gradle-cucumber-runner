@@ -1,6 +1,6 @@
 package se.thinkcode;
 
-import java.io.*;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -52,28 +52,28 @@ class CommandLineBuilder {
     }
 
     private void addClasspath(List<String> command, String classpath, CucumberExtension extension, CucumberTask commandLineOption) {
-        String shorten = "none";
+        String shorten = null;
         if (commandLineOption.shorten != null) {
             shorten = commandLineOption.shorten;
         } else if (!extension.shorten.isEmpty()) {
             shorten = extension.shorten;
         }
-        String tempDir;
-        switch (shorten) {
-            case "manifest":
-                tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
-                command.add("-cp");
-                command.add(createManifestJarFile(classpath, tempDir));
-                break;
-            case "argfile":
-                tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
-                command.add("@" + createJava9argFile(classpath, tempDir));
-                break;
-            default:
-                command.add("-cp");
-                command.add(classpath);
-                break;
+
+        if ("manifest".equals(shorten)) {
+            String tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
+            command.add("-cp");
+            command.add(createManifestJarFile(classpath, tempDir));
+            return;
         }
+
+        if ("argfile".equals(shorten)) {
+            String tempDir = commandLineOption.getTemporaryDir().getAbsolutePath();
+            command.add("@" + createJava9argFile(classpath, tempDir));
+            return;
+        }
+
+        command.add("-cp");
+        command.add(classpath);
     }
 
     private void addHelp(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
