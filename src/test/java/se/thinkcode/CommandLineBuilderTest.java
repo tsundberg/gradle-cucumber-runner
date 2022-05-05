@@ -132,6 +132,18 @@ public class CommandLineBuilderTest {
     }
 
     @Test
+    public void should_build_command_adding_multiple_glues() {
+        extension.glue = "classpath:se.thinkcode";
+        extension.extraGlues = new String[]{"another.path", "test.path"};
+
+        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption, projectDir);
+
+        assertCommandStart(actual);
+        assertThat(actual)
+                .containsSequence("--glue", "classpath:se.thinkcode", "--glue", "another.path", "--glue", "test.path");
+    }
+
+    @Test
     public void should_build_command_adding_glue_from_commandline_option() {
         commandlineOption.glue = "classpath:se.thinkcode";
 
@@ -139,6 +151,17 @@ public class CommandLineBuilderTest {
 
         assertCommandStart(actual);
         assertThat(actual).containsSequence("--glue", "classpath:se.thinkcode");
+    }
+
+    @Test
+    public void should_build_command_adding_multiple_glues_from_commandline_option() {
+        commandlineOption.glue = "classpath:se.thinkcode,another.path,   test.path";
+
+        String[] actual = builder.buildCommand(extension, "faked classpath", commandlineOption, projectDir);
+
+        assertCommandStart(actual);
+        assertThat(actual)
+                .containsSequence("--glue", "classpath:se.thinkcode", "--glue", "another.path", "--glue", "test.path");
     }
 
     @Test
