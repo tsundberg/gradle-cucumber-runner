@@ -10,7 +10,7 @@ Add the plugin to your project
 
 ```
 plugins {
-  id "se.thinkcode.cucumber-runner" version "0.0.8"
+  id "se.thinkcode.cucumber-runner" version "0.0.11"
 }
 ```
 
@@ -39,6 +39,7 @@ The complete list of options that can be set are these:
 cucumber {
     threads = '4'
     glue = 'classpath:se.thinkcode'
+    extraGlues = ['another.classpath', 'to.include']
     plugin = ['pretty']
     tags = ''
     name = ''
@@ -97,6 +98,31 @@ you can't stack tags. The solution is to put them into quotes like this:
 
 Doing so will forward the expression `not @wip` to the option `-tags` 
 and finally to Cucumber.
+
+#### Glues
+
+Cucumber uses glue to locate where the step definitions are.
+
+Specify them in the build file using `glue` as a string if you use one path and `extraGlues` as an array of strings if
+you need more than one path
+
+```groovy
+glue = 'classpath:se.thinkcode'
+extraGlues = ['another.classpath', 'to.include']
+```
+
+Or specify them as a command line option:
+
+```shell
+--glue "classpath:se.thinkcode"
+```
+
+OR
+
+```shell
+--glue "classpath:se.thinkcode, another.classpath, to.include"
+# The string will be divided into an array with `,` as delimiter. Any whitespace around `,` will be removed. 
+```
 
 #### Plugins
 

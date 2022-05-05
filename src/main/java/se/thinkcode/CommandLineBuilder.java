@@ -126,14 +126,23 @@ class CommandLineBuilder {
 
     private void addGlue(List<String> command, CucumberExtension extension, CucumberTask commandLineOption) {
         if (commandLineOption.glue != null) {
-            command.add("--glue");
-            command.add(commandLineOption.glue);
+            String[] glues = PluginParser.parse(commandLineOption.glue);
+            for (String glue : glues) {
+                command.add("--glue");
+                command.add(glue);
+            }
             return;
         }
 
         if (!extension.glue.isEmpty()) {
             command.add("--glue");
             command.add(extension.glue);
+        }
+        if (extension.extraGlues.length > 0) {
+            for (String glue : extension.extraGlues) {
+                command.add("--glue");
+                command.add(glue);
+            }
         }
     }
 
