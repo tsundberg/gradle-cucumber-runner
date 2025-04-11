@@ -2,6 +2,10 @@
 
 ## Building
 
+Use Java 8
+
+    sdk use java 8.0.442-zulu 
+
 Local build:
 
     ./gradlew clean build publishToMavenLocal

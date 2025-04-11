@@ -441,7 +441,7 @@ public class CommandLineBuilderTest {
         assertThat(actualSystemProperty).startsWith("-D");
         assertThat(actualSystemProperty).containsOnlyOnce("=");
 
-        assertThat(actual).containsSequence("-cp", "faked classpath", "cucumber.api.cli.Main");
+        assertThat(actual).containsSequence("-cp", "faked classpath", "io.cucumber.core.cli.Main");
     }
 
     private void assertShortenedCommandStart(String[] actual, Path expectedFilePath, String shortenMethod) {
@@ -453,10 +453,10 @@ public class CommandLineBuilderTest {
 
         switch (shortenMethod) {
             case "manifest":
-                assertThat(actual).containsSequence("-cp", expectedFilePath.toString(), "cucumber.api.cli.Main");
+                assertThat(actual).containsSequence("-cp", expectedFilePath.toString(), "io.cucumber.core.cli.Main");
                 break;
             case "argfile":
-                assertThat(actual).containsSequence("@" + expectedFilePath.toString(), "cucumber.api.cli.Main");
+                assertThat(actual).containsSequence("@" + expectedFilePath.toString(), "io.cucumber.core.cli.Main");
                 break;
         }
         File expectedFile = expectedFilePath.toFile();

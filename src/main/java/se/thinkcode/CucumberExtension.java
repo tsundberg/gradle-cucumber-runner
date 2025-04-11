@@ -21,5 +21,5 @@ public class CucumberExtension {
 
     public String featurePath = "src/test/resources";
 
-    public String main = "cucumber.api.cli.Main";
+    public String main = "io.cucumber.core.cli.Main";
 }
