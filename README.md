@@ -205,9 +205,9 @@ command line option is followed by a value. It is `please` above. However, it co
 
 ### Trouble shooting
 
-#### Java 8 is required
+#### Java 17 is required
 
-The plugin is build using Java 8 and gradle must be executed with Java 8 or newer.
+The plugin requires Gradle 9 which needs Java 17 or newer.
 
 #### The cucumber command executed
 

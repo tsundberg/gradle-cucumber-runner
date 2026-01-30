@@ -2,9 +2,9 @@ package se.thinkcode;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.logging.Logger;
-import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.SourceSetContainer;
+import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
 import se.thinkcode.stream.StreamConsumer;
@@ -200,8 +200,9 @@ public class CucumberTask extends DefaultTask {
         }
     }
 
-    private String getClasspath() {
-        SourceSetContainer sourceSets = getProject().getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
+    @Internal
+    String getClasspath() {
+        SourceSetContainer sourceSets = getProject().getExtensions().getByType(SourceSetContainer.class);
 
         for (SourceSet sourceSet : sourceSets) {
             if ("test".equals(sourceSet.getName())) {

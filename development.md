@@ -2,9 +2,9 @@
 
 ## Building
 
-Use Java 8
+Use Java 17 or newer
 
-    sdk use java 8.0.442-zulu 
+    sdk use java 21-zulu
 
 Local build:
 
