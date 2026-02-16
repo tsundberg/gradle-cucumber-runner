@@ -1,14 +1,18 @@
 package se.thinkcode;
 
 import org.gradle.api.DefaultTask;
+import org.gradle.api.file.ConfigurableFileCollection;
+import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.logging.Logger;
-import org.gradle.api.tasks.SourceSet;
-import org.gradle.api.tasks.SourceSetContainer;
+import org.gradle.api.model.ObjectFactory;
+import org.gradle.api.tasks.Classpath;
 import org.gradle.api.tasks.Internal;
+import org.gradle.api.tasks.Nested;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.options.Option;
 import se.thinkcode.stream.StreamConsumer;
 
+import javax.inject.Inject;
 import java.io.File;
 
 public class CucumberTask extends DefaultTask {
@@ -133,22 +137,48 @@ public class CucumberTask extends DefaultTask {
         this.featurePath = featurePath;
     }
 
-    public CucumberTask() {
+    private CucumberExtension cucumberExtension;
+    private final DirectoryProperty projectDirectory;
+    private final ConfigurableFileCollection testClasspath;
+
+    @Inject
+    public CucumberTask(ObjectFactory objectFactory) {
         setGroup("Cucumber");
         setDescription("Execute Cucumber-JVM from Gradle");
+        projectDirectory = objectFactory.directoryProperty();
+        testClasspath = objectFactory.fileCollection();
+    }
+
+    @Nested
+    public CucumberExtension getCucumberExtension() {
+        return cucumberExtension;
+    }
+
+    public void setCucumberExtension(CucumberExtension cucumberExtension) {
+        this.cucumberExtension = cucumberExtension;
+    }
+
+    @Internal
+    public DirectoryProperty getProjectDirectory() {
+        return projectDirectory;
+    }
+
+    @Classpath
+    public ConfigurableFileCollection getTestClasspath() {
+        return testClasspath;
     }
 
     @TaskAction
     public void runCucumber() {
-        CucumberExtension extension = getProject().getExtensions().findByType(CucumberExtension.class);
+        CucumberExtension extension = cucumberExtension;
         if (extension == null) {
             extension = new CucumberExtension();
         }
 
         try {
             CommandLineBuilder cliBuilder = new CommandLineBuilder();
-            File projectDir = getProject().getProjectDir();
-            String[] command = cliBuilder.buildCommand(extension, getClasspath(), this, projectDir);
+            File projectDir = projectDirectory.getAsFile().get();
+            String[] command = cliBuilder.buildCommand(extension, testClasspath.getAsPath(), this, projectDir);
             debugCommand(command);
             execute(command);
         } catch (Exception e) {
@@ -198,18 +228,5 @@ public class CucumberTask extends DefaultTask {
         if (exitValue != 0) {
             throw new RuntimeException("The execution failed");
         }
-    }
-
-    @Internal
-    String getClasspath() {
-        SourceSetContainer sourceSets = getProject().getExtensions().getByType(SourceSetContainer.class);
-
-        for (SourceSet sourceSet : sourceSets) {
-            if ("test".equals(sourceSet.getName())) {
-                return sourceSet.getRuntimeClasspath().getAsPath();
-            }
-        }
-
-        throw new RuntimeException("The test classpath was not found");
     }
 }
